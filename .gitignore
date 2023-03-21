@@ -36,3 +36,8 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+# Custom
+
+/.idea/
+/dependency-reduced-pom.xml
