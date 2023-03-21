@@ -1,0 +1,46 @@
+.root {
+    /*-fx-accent: #1e74c6;*/
+    /*-fx-focus-color: -fx-accent;*/
+    /*-fx-base: #373e43;*/
+    /*-fx-control-inner-background: derive(-fx-base, 35%);*/
+    /*-fx-control-inner-background-alt: -fx-control-inner-background ;*/
+}
+
+.label {
+    -fx-text-fill: white;
+}
+
+.context-menu {
+    -fx-background-color: #282828;
+    -fx-background-radius: 5px;
+}
+
+.menu-item .label {
+    -fx-fill: #e0e0e0;
+    -fx-font-size: 12px;
+    -fx-text-fill: #cecece;
+}
+
+.menu-item: focused .label {
+    -fx-text-fill: white;
+}
+.menu-item {
+    -fx-border-color: #282828;
+}
+
+.menu-item: focused {
+     -fx-background-color: #323232;
+}
+
+.jfx-progress-bar > .track, .jfx-progress-bar > .bar {
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+}
+
+.jfx-progress-bar > .bar {
+    -fx-background-color: #c0392b;
+}
+
+.jfx-button {
+    -fx-text-fill: white;
+}
