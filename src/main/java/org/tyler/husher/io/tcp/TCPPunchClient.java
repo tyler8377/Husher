@@ -1,6 +1,6 @@
 package org.tyler.husher.io.tcp;
 
-import org.tyler.husher.protocol.cipher.xsalsa20poly1305.Keys;
+import org.tyler.husher.protocol.security.xsalsa20poly1305.Keys;
 import org.tyler.husher.object.message.SocketInfoMessage;
 import org.tyler.husher.object.network.DHTNode;
 import org.tyler.husher.util.HexUtils;

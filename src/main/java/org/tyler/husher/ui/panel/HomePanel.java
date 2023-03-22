@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -18,12 +19,16 @@ import javafx.util.Duration;
 import org.tyler.husher.protocol.model.Channel;
 import org.tyler.husher.protocol.model.Message;
 import org.tyler.husher.protocol.model.User;
-import org.tyler.husher.ui.ResourceManager;
+import org.tyler.husher.ui.MainFrame;
 import org.tyler.husher.ui.UIHelper;
 import org.tyler.husher.ui.component.ChannelBox;
 import org.tyler.husher.ui.component.ChannelPane;
+import org.tyler.husher.ui.component.NetworkIndicatorBox;
+import org.tyler.husher.util.ResourceUtils;
 
 import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,7 +77,7 @@ public class HomePanel extends GridPane {
         searchTextField.setMaxWidth(Integer.MAX_VALUE);
         searchTextField.setAlignment(Pos.CENTER_LEFT);
         searchTextField.setStyle(defaultSearchTextFieldStyle);
-        ImageView searchIconView = new ImageView(new Image(ResourceManager.openResource("/image/search.png")));
+        ImageView searchIconView = new ImageView(new Image(ResourceUtils.openResource("images/search.png")));
         searchIconView.setOpacity(0.6f);
         searchIconView.setFitWidth(12);
         searchIconView.setTranslateY(-1);
@@ -81,6 +86,7 @@ public class HomePanel extends GridPane {
         searchTextField.setGraphicTextGap(4);
         searchTextField.setOnMouseEntered(event -> searchTextField.setStyle(hoverSearchTextFieldStyle));
         searchTextField.setOnMouseExited(event -> searchTextField.setStyle(defaultSearchTextFieldStyle));
+        searchTextField.setDisableVisualFocus(true);
 
         HBox topBox = new HBox(searchTextField);
         // topBox.setStyle("-fx-background-color: red;");
@@ -90,6 +96,7 @@ public class HomePanel extends GridPane {
         GridPane.setHgrow(channelsListBox, Priority.ALWAYS);
         GridPane.setVgrow(channelsListBox, Priority.ALWAYS);
         channelsListBox.setSpacing(4);
+        channelsListBox.setPrefHeight(Integer.MAX_VALUE);
 
         List<HBox> channels = new ArrayList<>();
         channels.add(createChannelBox(new Channel(0, 0, "rez disney", null, null), "#a29bfe"));
@@ -98,7 +105,7 @@ public class HomePanel extends GridPane {
 
         HBox createChannelBox = new HBox();
         Label createChannelLabel = new Label("+");
-        createChannelLabel.setFont(ResourceManager.getMonoFont("Regular", 14.0f));
+        createChannelLabel.setFont(ResourceUtils.getMonoFont("Regular", 14.0f));
         createChannelBox.setAlignment(Pos.CENTER);
         createChannelBox.setMinHeight(20);
         createChannelBox.setMaxHeight(20);
@@ -113,10 +120,9 @@ public class HomePanel extends GridPane {
 
         channelsListBox.getChildren().addAll(channels);
         channelsListBox.getChildren().addAll(createChannelBox);
-        explorerBox.getChildren().addAll(topBox, channelsListBox);
 
         int size = 32;
-        ImageView avatarView = new ImageView(new Image(ResourceManager.openResource("/image/icon.jpg")));
+        ImageView avatarView = new ImageView(new Image(ResourceUtils.openResource("images/icon.jpg")));
         GridPane.setHgrow(avatarView, Priority.ALWAYS);
         GridPane.setVgrow(avatarView, Priority.ALWAYS);
         avatarView.setFitWidth(size);
@@ -163,11 +169,11 @@ public class HomePanel extends GridPane {
         });
 
         Label usernameLabel = new Label("tyler");
-        usernameLabel.setFont(ResourceManager.getFont("Poppins", "Medium", 12.0f));
+        usernameLabel.setFont(ResourceUtils.getFont("Poppins", "Medium", 12.0f));
 
         Label activityLabel = new Label("Online");
         activityLabel.setOpacity(0.8f);
-        activityLabel.setFont(ResourceManager.getFont("UbuntuMono", "Regular", 11.0f));
+        activityLabel.setFont(ResourceUtils.getFont("UbuntuMono", "Regular", 11.0f));
 
         HBox statusBox = new HBox(activityLabel);
         // statusBox.setSpacing(6);
@@ -175,20 +181,31 @@ public class HomePanel extends GridPane {
         VBox userInfoBox = new VBox(usernameLabel, statusBox);
         userInfoBox.setAlignment(Pos.CENTER_LEFT);
 
-        float defaultOpacity = 0.7f;
-        float hoverOpacity = 0.9f;
+        float defaultOpacity = 0.6f;
+        float hoverOpacity = 0.8f;
+        String style = "-fx-background-radius: 5px; -fx-background-color: %s;";
         int size1 = 16;
 
         Label settingsIconButton = new Label();
-        ImageView settingsIconView = new ImageView(new Image(ResourceManager.openResource("/image/settings.png")));
+        ImageView settingsIconView = new ImageView(new Image(ResourceUtils.openResource("images/settings.png")));
         settingsIconView.setFitWidth(size1);
         settingsIconView.setFitHeight(size1);
         settingsIconButton.setGraphic(settingsIconView);
         settingsIconButton.setOpacity(defaultOpacity);
+        size1 *= 2;
         settingsIconButton.setMinSize(size1, size1);
         settingsIconButton.setMaxSize(size1, size1);
-        settingsIconButton.setOnMouseEntered(event -> settingsIconButton.setOpacity(hoverOpacity));
-        settingsIconButton.setOnMouseExited(event -> settingsIconButton.setOpacity(defaultOpacity));
+        settingsIconButton.setTranslateX(-1);
+        settingsIconButton.setAlignment(Pos.CENTER);
+
+        settingsIconButton.setOnMouseEntered(event -> {
+            settingsIconButton.setOpacity(hoverOpacity);
+            settingsIconButton.setStyle(String.format(style, "#212121"));
+        });
+        settingsIconButton.setOnMouseExited(event -> {
+            settingsIconButton.setOpacity(defaultOpacity);
+            settingsIconButton.setStyle(String.format(style, "transparent"));
+        });
 
         Region filler = new Region();
         HBox.setHgrow(filler, Priority.ALWAYS);
@@ -208,15 +225,50 @@ public class HomePanel extends GridPane {
         });
 
         HBox profileBox = new HBox(profileContainerBox);
-        GridPane.setHgrow(profileBox, Priority.ALWAYS);
-        GridPane.setValignment(profileBox, VPos.BOTTOM);
         GridPane.setMargin(profileBox, new Insets(3));
         profileBox.setMaxHeight(44);
+        profileBox.setMinHeight(44);
+
+        NetworkIndicatorBox networkIndicatorBox = new NetworkIndicatorBox(14, 3, 8, 1, Color.web("#2ecc71"));
+        networkIndicatorBox.setTranslateX(6);
+
+        Label networkStatusLabel = new Label("P2P Connections: 2");
+        networkStatusLabel.setStyle("-fx-text-fill: #2ecc71;");
+        networkStatusLabel.setFont(ResourceUtils.getFont("UbuntuMono", "Regular", 12.0f));
+
+        Label networkDetailsLabel = new Label("D 5.12MB  U 2.77MB");
+        // networkDetailsLabel.setStyle("-fx-text-fill: #2ecc71;");
+        networkDetailsLabel.setFont(ResourceUtils.getFont("UbuntuMono", "Regular", 11.0f));
+        networkDetailsLabel.setOpacity(0.5f);
+
+        VBox networkInfoVBox = new VBox(networkStatusLabel, networkDetailsLabel);
+        networkInfoVBox.setTranslateY(7);
+        networkInfoVBox.setSpacing(2);
+
+        HBox networkInfoContainerBox = new HBox(networkIndicatorBox, networkInfoVBox);
+        HBox.setHgrow(networkInfoContainerBox, Priority.ALWAYS);
+        networkInfoContainerBox.setSpacing(14);
+        networkInfoContainerBox.setAlignment(Pos.CENTER_LEFT);
+        networkInfoContainerBox.setStyle("-fx-background-radius: 5px; -fx-background-color: #181818;");
+
+        HBox networkInfoBox = new HBox(networkInfoContainerBox);
+        GridPane.setMargin(networkInfoBox, new Insets(3));
+        networkInfoBox.setMaxHeight(38);
+        networkInfoBox.setMinHeight(38);
+
+        VBox bottomLeftBox = new VBox(networkInfoBox, profileBox);
+        GridPane.setHgrow(bottomLeftBox, Priority.ALWAYS);
+        GridPane.setMargin(bottomLeftBox, new Insets(3));
+        bottomLeftBox.setSpacing(3);
+        // bottomLeftBox.setAlignment(Pos.BOTTOM_CENTER);
+        // bottomLeftBox.setStyle("-fx-background-color: red;");
+
+        explorerBox.getChildren().addAll(topBox, channelsListBox, bottomLeftBox);
 
         GridPane leftPane = new GridPane();
         GridPane.setVgrow(leftPane, Priority.ALWAYS);
         leftPane.setStyle("-fx-background-color: #121212;");
-        leftPane.getChildren().addAll(explorerBox, profileBox);
+        leftPane.getChildren().addAll(explorerBox);
         GridPane centerPane = createCenterPane();
         GridPane.setVgrow(centerPane, Priority.ALWAYS);
 
@@ -232,6 +284,13 @@ public class HomePanel extends GridPane {
 
         getChildren().addAll(leftPane, centerPane);
         setFocusedChannelPane(null);
+
+        MainFrame.INSTANCE.addWindowFocusListener(new WindowAdapter() {
+            @Override
+            public void windowGainedFocus(WindowEvent e) {
+                focusInputField();
+            }
+        });
     }
 
     private ChannelBox createChannelBox(Channel channel, String color) {
@@ -252,11 +311,11 @@ public class HomePanel extends GridPane {
 
         Label channelLabel = new Label(channel.getName());
         channelLabel.setOpacity(0.9f);
-        channelLabel.setFont(ResourceManager.getFont("Poppins", "Medium", 12.0f));
+        channelLabel.setFont(ResourceUtils.getFont("Poppins", "Medium", 12.0f));
 
         Label descriptionLabel = new Label("3 Members");
         descriptionLabel.setOpacity(0.8f);
-        descriptionLabel.setFont(ResourceManager.getFont("UbuntuMono", "Regular", 12.0f));
+        descriptionLabel.setFont(ResourceUtils.getFont("UbuntuMono", "Regular", 12.0f));
 
         Label notificationLabel = new Label("2");
         // channelLabel.setFont(ResourceManager.getMontserratFont("Medium", 12.0f));
@@ -267,7 +326,7 @@ public class HomePanel extends GridPane {
         notificationLabel.setVisible(false);
 
         int size = 32;
-        ImageView iconView = new ImageView(new Image(ResourceManager.openResource("/image/icon.jpg")));
+        ImageView iconView = new ImageView(new Image(ResourceUtils.openResource("images/icon.jpg")));
 
         iconView.setFitWidth(size);
         iconView.setFitHeight(size);
@@ -328,7 +387,7 @@ public class HomePanel extends GridPane {
         topBox.setMinHeight(28);
         topBox.setAlignment(Pos.CENTER_LEFT);
 
-        Font textFont = ResourceManager.getFont("RobotoMono", "Regular", 13.0f);
+        Font textFont = ResourceUtils.getFont("RobotoMono", "Regular", 13.0f);
         Label topTitleLabel = new Label("rez disney");
         topTitleLabel.setFont(textFont);
         topBox.getChildren().addAll(topTitleLabel);

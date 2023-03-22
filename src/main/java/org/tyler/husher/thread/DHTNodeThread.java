@@ -1,6 +1,6 @@
 package org.tyler.husher.thread;
 
-import org.tyler.husher.protocol.cipher.xsalsa20poly1305.Keys;
+import org.tyler.husher.protocol.security.xsalsa20poly1305.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tyler.husher.Husher;

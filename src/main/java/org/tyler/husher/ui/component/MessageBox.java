@@ -11,7 +11,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import org.tyler.husher.protocol.model.Message;
 import org.tyler.husher.protocol.model.User;
-import org.tyler.husher.ui.ResourceManager;
+import org.tyler.husher.util.ResourceUtils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -19,9 +19,9 @@ import java.util.*;
 
 public class MessageBox extends HBox {
 
-    private static final Font usernameFont = ResourceManager.getFont("UbuntuMono", "Regular", 13.0f);
-    private static final Font dateFont = ResourceManager.getFont("UbuntuMono", "Regular", 12.0f);
-    private static final Font messageFont = ResourceManager.getFont("UbuntuMono", "Regular", 13.0f);
+    private static final Font usernameFont = ResourceUtils.getFont("UbuntuMono", "Regular", 13.0f);
+    private static final Font dateFont = ResourceUtils.getFont("UbuntuMono", "Regular", 12.0f);
+    private static final Font messageFont = ResourceUtils.getFont("UbuntuMono", "Regular", 13.0f);
 
     private final User authorUser;
     private final VBox messagesVBox;
@@ -31,7 +31,7 @@ public class MessageBox extends HBox {
         this.authorUser = authorUser;
 
         int avatarViewSize = 32;
-        ImageView avatarView = new ImageView(new Image(ResourceManager.openResource("/image/icon.jpg")));
+        ImageView avatarView = new ImageView(new Image(ResourceUtils.openResource("images/icon.jpg")));
         avatarView.setFitWidth(avatarViewSize);
         avatarView.setFitHeight(avatarViewSize);
         Rectangle clip = new Rectangle(avatarView.getFitWidth(), avatarView.getFitHeight());

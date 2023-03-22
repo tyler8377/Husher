@@ -2,6 +2,7 @@ package org.tyler.husher.ui;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import org.tyler.husher.util.FXUtils;
 
 public class FxApp extends Application {
 
@@ -13,7 +14,7 @@ public class FxApp extends Application {
             mainFrame.initComponents();
             mainFrame.setVisible(true);
         } catch (Throwable t) {
-            UIHelper.handleException(getClass(), t);
+            FXUtils.handleException(getClass(), t);
             System.exit(1);
         }
     }

@@ -1,8 +1,9 @@
 package org.tyler.husher.object.message;
 
+import java.io.Serializable;
 import java.net.InetSocketAddress;
 
-public class SocketInfoMessage extends NetworkMessage {
+public class SocketInfoMessage implements Serializable {
 
     private final String ip;
     private final int port;

@@ -3,8 +3,6 @@ package org.tyler.husher.io.tcp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tyler.husher.object.exception.PeerTimeoutException;
-import org.tyler.husher.object.message.EncryptedObject;
-import org.tyler.husher.object.message.NetworkMessage;
 import org.tyler.husher.object.message.SocketInfoMessage;
 import org.tyler.husher.util.HexUtils;
 
@@ -81,8 +79,8 @@ public class TCPPunchServer implements Runnable {
                 }
             });
 
-            TCPClient<NetworkMessage> client1 = (TCPClient<NetworkMessage>) localQueue[0];
-            TCPClient<NetworkMessage> client2 = (TCPClient<NetworkMessage>) localQueue[1];
+            TCPClient<Serializable> client1 = (TCPClient<Serializable>) localQueue[0];
+            TCPClient<Serializable> client2 = (TCPClient<Serializable>) localQueue[1];
 
             if (client1 != null && client2 != null) {
                 queue.remove(identifier);

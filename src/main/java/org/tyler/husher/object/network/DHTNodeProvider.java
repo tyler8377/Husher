@@ -1,6 +1,6 @@
 package org.tyler.husher.object.network;
 
-import org.tyler.husher.ui.ResourceManager;
+import org.tyler.husher.util.ResourceUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -52,7 +52,7 @@ public class DHTNodeProvider {
     }
 
     public List<DHTNode> getOfflineNodeList() throws IOException {
-        try (InputStream is = ResourceManager.openResource("/dht/default_nodes.txt")) {
+        try (InputStream is = ResourceUtils.openResource("dht/default_nodes.txt")) {
             return readNodeData(is);
         }
     }

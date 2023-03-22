@@ -6,12 +6,7 @@ import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
-import org.tyler.husher.util.Utils;
-import org.slf4j.LoggerFactory;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.datatransfer.StringSelection;
+import org.tyler.husher.util.ResourceUtils;
 
 public class UIHelper {
 
@@ -24,7 +19,7 @@ public class UIHelper {
     public static final String COLOR_DARK_GREY = "#282828";
     public static final String COLOR_DARK_GREY2 = "#242424";
 
-    public static final Font subtitleFont = ResourceManager.getMontserratFont("Bold", 18.0f);
+    public static final Font subtitleFont = ResourceUtils.getMontserratFont("Bold", 18.0f);
 
     public static JFXTextField createStyledTextField() {
         JFXTextField textField = new JFXTextField();
@@ -62,23 +57,5 @@ public class UIHelper {
         return label;
     }
 
-    public static void handleException(Class<?> clazz, Throwable t) {
-        LoggerFactory.getLogger(clazz).error("Exception on {}", clazz.getSimpleName(), t);
-        Throwable root = Utils.findRootCause(t);
-        String message = root.getClass().getName() + ": " + root.getMessage();
 
-        Object[] buttons = {
-            "Copy details", "OK"
-        };
-
-        int choice = JOptionPane.showOptionDialog(null, message, "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, buttons, buttons[1]);
-        
-        if (choice == 0) {
-            try {
-                Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(Utils.throwableToString(root)), null);
-            } catch (Exception e) {
-                LoggerFactory.getLogger(UIHelper.class).error("Unable to copy stacktrace to the clipboard", e);
-            }
-        }
-    }
 }

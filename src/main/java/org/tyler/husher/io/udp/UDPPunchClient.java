@@ -1,16 +1,15 @@
 package org.tyler.husher.io.udp;
 
 import org.tyler.husher.io.tcp.TCPClient;
-import org.tyler.husher.object.message.NetworkMessage;
 import org.tyler.husher.object.message.SocketInfoMessage;
-import org.tyler.husher.object.message.StringMessage;
-import org.tyler.husher.object.typo.Pair;
+import org.tyler.husher.util.typo.Pair;
 
+import java.io.Serializable;
 import java.net.Socket;
 
 public class UDPPunchClient {
 
-    private final TCPClient<NetworkMessage> client;
+    private final TCPClient<Serializable> client;
 
     public UDPPunchClient(String serverIp, int serverPort) throws Exception {
         Socket socket = new Socket(serverIp, serverPort);
@@ -23,7 +22,7 @@ public class UDPPunchClient {
         int localPort = client.getSocket().getLocalPort();
         SocketInfoMessage localSocketInfo = new SocketInfoMessage(localIp, localPort);
 
-        client.send(new StringMessage(identifier));
+        client.send(identifier);
         System.out.println("Sent identifier to server. Now waiting for peer info.");
 
         SocketInfoMessage peerInfo = (SocketInfoMessage) client.receive();
