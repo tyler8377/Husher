@@ -11,7 +11,7 @@
 
     <properties>
         <project.javaVersion>11</project.javaVersion>
-        <project.mainClass>org.tyler.husher.Husher</project.mainClass>
+        <project.mainClass>org.tyler.husher.client.Husher</project.mainClass>
         <maven.compiler.source>${project.javaVersion}</maven.compiler.source>
         <maven.compiler.target>${project.javaVersion}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
